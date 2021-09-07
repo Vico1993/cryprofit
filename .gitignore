@@ -1,0 +1,11 @@
+*/**/.DS_Store
+
+# Compiled
+build/
+
+# dotenv environment variables file
+.env
+.env.local
+
+# Dependencies
+node_modules
