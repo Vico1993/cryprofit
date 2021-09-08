@@ -1,4 +1,4 @@
-import * as CoinMarketCap from 'coinmarketcap-api'
+import { default as CoinMarketCap } from 'coinmarketcap-api'
 import * as dotenv from 'dotenv'
 import { CURRENCY } from '../constant'
 import { cmcQuotesResponse } from '../types'
@@ -7,8 +7,9 @@ import { cmcQuotesResponse } from '../types'
 dotenv.config()
 
 // Constuct client from CMC
-const client = new CoinMarketCap(process.env.API_KEY)
+const client = new CoinMarketCap(process.env.COINMARKETCAP_API_KEY)
 
+// @todo: Find a better way to cach CMC price
 const cache = {}
 
 /**
@@ -21,8 +22,8 @@ const cache = {}
 export const getAssetValue = async (
     symbol: string,
     currency: string = CURRENCY,
-): Promise<number> => {
-    if (typeof cache[symbol] != undefined) {
+): Promise<number | null> => {
+    if (typeof cache[symbol] !== 'undefined') {
         return cache[symbol]
     }
 
@@ -32,10 +33,12 @@ export const getAssetValue = async (
             convert: currency,
         })) as cmcQuotesResponse
 
-        cache[symbol] = response.data?.symbol.quote?.currency.price
+        cache[symbol] = response.data[symbol].quote[currency].price
 
         return cache[symbol]
     } catch (error) {
         console.error('Coinmarketcap error: ', error)
     }
+
+    return null
 }

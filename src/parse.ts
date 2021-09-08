@@ -1,8 +1,9 @@
 type row = {
+    time: string
     asset: string
-    quantity_bought: string
+    quantity: string
     asset_value: string
-    value: string
+    bought_at: string
     currency: string
 }
 
@@ -12,18 +13,24 @@ export const parse = async (path: string, asset: string) => {
     const transactions = require(path) as row[]
 
     for (const transaction of transactions) {
+        let log = ''
         const currentAssetVal = await getAssetValue(transaction.asset, transaction.currency)
-        const assetCurrentPrice = parseFloat(transaction.quantity_bought) * currentAssetVal
-        const diff = assetCurrentPrice / parseFloat(transaction.value)
 
-        console.log(
-            `${transaction.quantity_bought}${transaction.asset}: Bought for ${transaction.quantity_bought} now worth: ${assetCurrentPrice}`,
-        )
-
-        if (diff > 0) {
-            console.log(`win: ${diff * 100}`)
-        } else {
-            console.log(`loose: ${diff * 100}`)
+        if (!currentAssetVal) {
+            continue
         }
+
+        const time = new Date(transaction.time).toLocaleDateString('en-ca')
+        const currentPrice = parseFloat(transaction.quantity) * currentAssetVal
+        const diff = currentPrice / parseFloat(transaction.bought_at)
+
+        log += `${time}: ${transaction.quantity}${transaction.asset} `
+        log += `Bought for ${transaction.bought_at}, now worth ${currentPrice}`
+        log += ' ( '
+        log += diff > 0 ? '+' : '-'
+        log += `${diff * 100}%`
+        log += ' ) '
+
+        console.log(log)
     }
 }
