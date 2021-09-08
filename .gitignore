@@ -3,6 +3,9 @@
 # Compiled
 build/
 
+# CSV Reports
+reports/
+
 # dotenv environment variables file
 .env
 .env.local

@@ -1,3 +1,5 @@
+// TODO: Clean this file
+
 /**
  * Price information structure
  */
