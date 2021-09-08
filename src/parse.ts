@@ -15,6 +15,9 @@ export const parse = async (path: string, asset?: string) => {
             continue
         }
 
+        console.log('-----------------------------------------------------')
+        console.log('')
+
         const time = new Date(transaction.time).toLocaleDateString('en-ca')
         const currentPrice = transaction.quantity * currentAssetVal
         const diff = currentPrice / transaction.bought_at
@@ -27,5 +30,8 @@ export const parse = async (path: string, asset?: string) => {
         log += ' ) '
 
         console.log(log)
+        console.log('')
     }
+
+    console.log('-----------------------------------------------------')
 }

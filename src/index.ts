@@ -11,7 +11,7 @@ const program = new Command()
 
 clear()
 
-console.log(chalk.blueBright(figlet.textSync('Cryprofit', { horizontalLayout: 'full' })))
+console.info(chalk.blueBright(figlet.textSync('Cryprofit', { horizontalLayout: 'full' })))
 
 program
     .version('1.0.0')
@@ -34,10 +34,26 @@ program
         }
 
         if (debug) {
-            console.log(`Script will run with ${asset}`)
+            console.info('')
+            console.info('')
+            console.info('')
+            console.info(`************************DEBUG************************`)
+            console.info('')
 
-            console.log('Options:')
-            console.log(program.opts())
+            if (!asset) {
+                console.info(`Script will run with no asset filter`)
+            } else {
+                console.info(`Script will run with ${asset}`)
+            }
+
+            console.info('')
+            console.info('Options:')
+            console.info(program.opts())
+
+            console.info('')
+            console.info(`************************DEBUG************************`)
+            console.info('')
+            console.info('')
         }
 
         parse('./../input.json', asset)
