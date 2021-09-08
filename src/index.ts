@@ -11,7 +11,7 @@ const program = new Command()
 
 clear()
 
-console.log(chalk.green(figlet.textSync('Cryprofit test', { horizontalLayout: 'full' })))
+console.log(chalk.blueBright(figlet.textSync('Cryprofit', { horizontalLayout: 'full' })))
 
 program
     .version('1.0.0')
@@ -22,9 +22,8 @@ program
     .option('-d --debug', 'List all trade with a Lost or profit')
     // .option('-p --path', 'File path for the CSV')
     .action((opts, comand) => {
+        let asset = null
         let debug = false
-        // For now use a DEFAULT crypto
-        let asset = 'BTC'
 
         if (opts.debug) {
             debug = true
@@ -34,9 +33,9 @@ program
             asset = program.opts().asset
         }
 
-        console.log(`Script will run with BTC, DEBUG: ${debug}, PATH: `)
-
         if (debug) {
+            console.log(`Script will run with ${asset}`)
+
             console.log('Options:')
             console.log(program.opts())
         }

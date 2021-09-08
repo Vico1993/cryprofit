@@ -1,42 +1,3 @@
-// TODO: Clean this file
-
-/**
- * Price information structure
- */
-export type quote = {
-    price: number
-    percent_change_1h: number
-    percent_change_24h: number | null
-    percent_change_7d: number | null
-    percent_change_30d: number | null
-    percent_change_60d: number | null
-    percent_change_90d: number | null
-    last_updated: string
-}
-
-/**
- * Basic list of information return for each coin
- */
-export type coin = {
-    id: number
-    name: string
-    symbol: string
-    slug: string
-    num_market_pairs: number
-    date_added: string
-    // tags
-    max_supply: number
-    circulating_supply: number
-    total_supply: number
-    is_active: boolean
-    cmc_rank: number
-    is_fiat: boolean
-    last_updated: string
-    quote: {
-        [key: string]: quote
-    }
-}
-
 /**
  * Basic Coinmarket cap response for /v1/cryptocurrency/quotes/latest
  */
@@ -48,6 +9,44 @@ export type cmcQuotesResponse = {
         credit_count: number
     }
     data: {
-        [key: string]: coin
+        [key: string]: {
+            id: number
+            name: string
+            symbol: string
+            slug: string
+            num_market_pairs: number
+            date_added: string
+            max_supply: number
+            circulating_supply: number
+            total_supply: number
+            is_active: boolean
+            cmc_rank: number
+            is_fiat: boolean
+            last_updated: string
+            quote: {
+                [key: string]: {
+                    price: number
+                    percent_change_1h: number
+                    percent_change_24h: number | null
+                    percent_change_7d: number | null
+                    percent_change_30d: number | null
+                    percent_change_60d: number | null
+                    percent_change_90d: number | null
+                    last_updated: string
+                }
+            }
+        }
     }
+}
+
+/**
+ * Parsing row format
+ */
+export type ParseRow = {
+    time: string
+    asset: string
+    quantity: number
+    asset_value: number
+    bought_at: number
+    currency: string
 }

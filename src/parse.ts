@@ -1,18 +1,13 @@
-type row = {
-    time: string
-    asset: string
-    quantity: string
-    asset_value: string
-    bought_at: string
-    currency: string
-}
-
 import { getAssetValue } from './service'
+import { ParseRow } from './types'
 
-export const parse = async (path: string, asset: string) => {
-    const transactions = require(path) as row[]
+export const parse = async (path: string, asset?: string) => {
+    for (const transaction of require(path) as ParseRow[]) {
+        // Filter by asset
+        if (asset && asset != transaction.asset) {
+            continue
+        }
 
-    for (const transaction of transactions) {
         let log = ''
         const currentAssetVal = await getAssetValue(transaction.asset, transaction.currency)
 
@@ -21,8 +16,8 @@ export const parse = async (path: string, asset: string) => {
         }
 
         const time = new Date(transaction.time).toLocaleDateString('en-ca')
-        const currentPrice = parseFloat(transaction.quantity) * currentAssetVal
-        const diff = currentPrice / parseFloat(transaction.bought_at)
+        const currentPrice = transaction.quantity * currentAssetVal
+        const diff = currentPrice / transaction.bought_at
 
         log += `${time}: ${transaction.quantity}${transaction.asset} `
         log += `Bought for ${transaction.bought_at}, now worth ${currentPrice}`

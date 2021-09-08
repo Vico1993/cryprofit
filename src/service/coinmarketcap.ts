@@ -10,7 +10,11 @@ dotenv.config()
 const client = new CoinMarketCap(process.env.COINMARKETCAP_API_KEY)
 
 // @todo: Find a better way to cach CMC price
-const cache = {}
+// Mock reponse to avoid useless call
+const cache = {
+    BTC: parseFloat('59,011.65'),
+    ETH: parseFloat('4,348.04'),
+}
 
 /**
  * Query CMC to get price
