@@ -6,6 +6,8 @@ build/
 # CSV Reports
 reports/
 
+input.json
+
 # dotenv environment variables file
 .env
 .env.local

@@ -5,7 +5,7 @@ import * as path from 'path'
 import { Command } from 'commander'
 import clear from 'clear'
 import figlet from 'figlet'
-import { parse } from './parser'
+import { parse } from './parse'
 
 const program = new Command()
 
@@ -18,26 +18,29 @@ program
     .description(
         'This CLI will help you to know what are your profit and lose. Will read from a CSV',
     )
-    .option('-c --crypto <code>', 'Can choose a crypto, ex: BTC')
+    .option('-a --asset <code>', 'Can choose a crypto, ex: BTC')
     .option('-d --debug', 'List all trade with a Lost or profit')
-    .option('-p --path', 'File path for the CSV')
+    // .option('-p --path', 'File path for the CSV')
     .action((opts, comand) => {
         let debug = false
         // For now use a DEFAULT crypto
-        let crypto = 'BTC'
+        let asset = 'BTC'
 
         if (opts.debug) {
             debug = true
         }
 
-        if (opts.crypto) {
-            crypto = program.opts().crypto
+        if (opts.asset) {
+            asset = program.opts().asset
         }
-
-        console.log(program.opts())
 
         console.log(`Script will run with BTC, DEBUG: ${debug}, PATH: `)
 
-        parse('./reports/coinbase.csv')
+        if (debug) {
+            console.log('Options:')
+            console.log(program.opts())
+        }
+
+        parse('./../input.json', asset)
     })
     .parse(process.argv)

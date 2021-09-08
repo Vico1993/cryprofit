@@ -9,6 +9,8 @@ dotenv.config()
 // Constuct client from CMC
 const client = new CoinMarketCap(process.env.API_KEY)
 
+const cache = {}
+
 /**
  * Query CMC to get price
  *
@@ -16,12 +18,24 @@ const client = new CoinMarketCap(process.env.API_KEY)
  * @param {string} symbol
  * @returns {Promise<cmcQuotesResponse>}
  */
-export const getCoinValue = async (
+export const getAssetValue = async (
     symbol: string,
     currency: string = CURRENCY,
-): Promise<cmcQuotesResponse> => {
-    return (await client.getQuotes({
-        symbol: symbol,
-        convert: currency,
-    })) as cmcQuotesResponse
+): Promise<number> => {
+    if (typeof cache[symbol] != undefined) {
+        return cache[symbol]
+    }
+
+    try {
+        const response = (await client.getQuotes({
+            symbol: symbol,
+            convert: currency,
+        })) as cmcQuotesResponse
+
+        cache[symbol] = response.data?.symbol.quote?.currency.price
+
+        return cache[symbol]
+    } catch (error) {
+        console.error('Coinmarketcap error: ', error)
+    }
 }
