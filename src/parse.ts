@@ -12,7 +12,19 @@ type row = {
     diff: string
 }
 
-export const parse = async (path: string, asset?: string, debug: boolean = false) => {
+/**
+ * Logic who will parse JSON to build ARRAY in response
+ *
+ * @param {string} path File path
+ * @param {string} asset Name of the asset, OPTIONAL
+ * @param {boolean} debug Debug mode
+ * @return {void}
+ */
+export const parse = async (
+    path: string,
+    asset?: string,
+    debug: boolean = false,
+): Promise<void> => {
     let totalInvest = 0
     let totalCurrentValue = 0
     const rows: row[] = []
