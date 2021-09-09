@@ -9,11 +9,15 @@ dotenv.config()
 // Constuct client from CMC
 const client = new CoinMarketCap(process.env.COINMARKETCAP_API_KEY)
 
+const strintToNumber = (str: string): number => {
+    return Number(str.replace(/[^0-9.-]+/g, ''))
+}
+
 // @todo: Find a better way to cach CMC price
 // Mock reponse to avoid useless call
 const cache = {
-    BTC: parseFloat('59,011.65'),
-    ETH: parseFloat('4,348.04'),
+    BTC: strintToNumber('59,011.65'),
+    ETH: strintToNumber('4,348.04'),
 }
 
 /**
