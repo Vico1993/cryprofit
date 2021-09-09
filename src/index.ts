@@ -6,6 +6,7 @@ import { Command } from 'commander'
 import clear from 'clear'
 import figlet from 'figlet'
 import { parse } from './parse'
+import { input } from './types'
 
 const program = new Command()
 
@@ -21,7 +22,7 @@ program
     .option('-a --asset <code>', 'Can choose a crypto, ex: BTC')
     .option('-d --debug', 'List all trade with a Lost or profit')
     // .option('-p --path', 'File path for the CSV')
-    .action((opts, comand) => {
+    .action(async (opts, comand) => {
         let asset = null
         let debug = false
 
@@ -56,6 +57,21 @@ program
             console.info('')
         }
 
-        parse('./../input.json', asset, debug)
+        const data = require('./../input.json') as input[]
+
+        const { quotes, totalInvest, totalCurrentValue } = await parse(data, asset, debug)
+
+        // Overview
+        console.table(quotes)
+
+        // Result
+        console.table({
+            'Total invest': totalInvest,
+            'Total current Value': parseFloat(totalCurrentValue.toFixed(2)),
+            'Diff ( in CAD )': `$${((totalCurrentValue - totalInvest) / totalInvest).toFixed(5)}`,
+            'Diff ( in % )': `${(((totalCurrentValue - totalInvest) / totalInvest) * 100).toFixed(
+                2,
+            )}%`,
+        })
     })
     .parse(process.argv)

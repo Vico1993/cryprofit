@@ -1,40 +1,28 @@
 import { getAssetValue } from './service'
-import { ParseRow } from './types'
-
-type row = {
-    time: string
-    asset: string
-    quantity: number
-    boughtAt: number
-    currentPrice: number
-    boughtFor: number
-    currentValue: number
-    diff: string
-}
+import { input, quote, totalQuote } from './types'
 
 /**
- * Logic who will parse JSON to build ARRAY in response
+ * Logic who will parse Inbuild to build ARRAY's information
  *
- * @param {string} path File path
+ * @param {input[]} input
  * @param {string} asset Name of the asset, OPTIONAL
  * @param {boolean} debug Debug mode
  * @return {void}
  */
 export const parse = async (
-    path: string,
+    input: input[],
     asset?: string,
     debug: boolean = false,
-): Promise<void> => {
+): Promise<totalQuote> => {
     let totalInvest = 0
     let totalCurrentValue = 0
-    const rows: row[] = []
+    const rows: quote[] = []
 
-    for (const transaction of require(path) as ParseRow[]) {
+    for (const transaction of input) {
         // Filter by asset
         if (asset && asset != transaction.asset) {
             continue
         }
-
         const currentAssetVal = await getAssetValue(transaction.asset, transaction.currency, debug)
 
         if (!currentAssetVal) {
@@ -43,7 +31,9 @@ export const parse = async (
 
         const currentPrice = transaction.quantity * currentAssetVal
 
-        totalInvest += transaction.bought_at
+        console.log(currentAssetVal, currentPrice, transaction.quantity)
+
+        totalInvest += transaction.bought_for
         totalCurrentValue += currentPrice
 
         rows.push({
@@ -52,23 +42,18 @@ export const parse = async (
             asset: transaction.asset,
             boughtAt: transaction.asset_value,
             currentPrice: currentAssetVal,
-            boughtFor: transaction.bought_at,
+            boughtFor: transaction.bought_for,
             currentValue: parseFloat(currentPrice.toFixed(2)),
             diff: `${(
-                ((currentPrice - transaction.bought_at) / transaction.bought_at) *
+                ((currentPrice - transaction.bought_for) / transaction.bought_for) *
                 100
             ).toFixed(2)}%`,
         })
     }
 
-    // Overview
-    console.table(rows)
-
-    // Result
-    console.table({
-        'Total invest': totalInvest,
-        'Total current Value': parseFloat(totalCurrentValue.toFixed(2)),
-        'Diff ( in CAD )': `$${((totalCurrentValue - totalInvest) / totalInvest).toFixed(5)}`,
-        'Diff ( in % )': `${(((totalCurrentValue - totalInvest) / totalInvest) * 100).toFixed(2)}%`,
-    })
+    return {
+        totalCurrentValue,
+        totalInvest,
+        quotes: rows,
+    }
 }

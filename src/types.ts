@@ -1,7 +1,7 @@
 /**
  * Basic Coinmarket cap response for /v1/cryptocurrency/quotes/latest
  */
-export type cmcQuotesResponse = {
+export type cmcAPIResponse = {
     status: {
         timestamp: string
         error_code: number
@@ -40,13 +40,36 @@ export type cmcQuotesResponse = {
 }
 
 /**
- * Parsing row format
+ * Parsing input format
  */
-export type ParseRow = {
+export type input = {
     time: string
     asset: string
     quantity: number
     asset_value: number
-    bought_at: number
+    bought_for: number
     currency: string
+}
+
+/**
+ *
+ */
+export type quote = {
+    time: string
+    asset: string
+    quantity: number
+    boughtAt: number
+    currentPrice: number
+    boughtFor: number
+    currentValue: number
+    diff: string
+}
+
+/**
+ *
+ */
+export type totalQuote = {
+    totalInvest: number
+    totalCurrentValue: number
+    quotes: quote[]
 }

@@ -1,7 +1,7 @@
 import { default as CoinMarketCap } from 'coinmarketcap-api'
 import * as dotenv from 'dotenv'
 import { CURRENCY } from '../constant'
-import { cmcQuotesResponse } from '../types'
+import { cmcAPIResponse } from '../types'
 
 // Load process.env in Typescript
 dotenv.config()
@@ -27,7 +27,7 @@ const cache = {}
  *
  * @param {string} currency
  * @param {string} symbol
- * @returns {Promise<cmcQuotesResponse>}
+ * @returns {Promise<cmcAPIResponse>}
  */
 export const getAssetValue = async (
     symbol: string,
@@ -46,7 +46,7 @@ export const getAssetValue = async (
         const response = (await client.getQuotes({
             symbol: symbol,
             convert: currency,
-        })) as cmcQuotesResponse
+        })) as cmcAPIResponse
 
         cache[symbol] = response.data[symbol].quote[currency].price
 
