@@ -13,6 +13,8 @@ type row = {
 }
 
 export const parse = async (path: string, asset?: string) => {
+    let totalInvest = 0
+    let totalCurrentValue = 0
     const rows: row[] = []
 
     for (const transaction of require(path) as ParseRow[]) {
@@ -29,6 +31,9 @@ export const parse = async (path: string, asset?: string) => {
 
         const currentPrice = transaction.quantity * currentAssetVal
 
+        totalInvest += transaction.bought_at
+        totalCurrentValue += currentPrice
+
         rows.push({
             time: new Date(transaction.time).toLocaleDateString('en-ca'),
             quantity: transaction.quantity,
@@ -44,5 +49,14 @@ export const parse = async (path: string, asset?: string) => {
         })
     }
 
+    // Overview
     console.table(rows)
+
+    // Result
+    console.table({
+        'Total invest': totalInvest,
+        'Total current Value': parseFloat(totalCurrentValue.toFixed(2)),
+        'Diff ( in CAD )': `$${((totalCurrentValue - totalInvest) / totalInvest).toFixed(5)}`,
+        'Diff ( in % )': `${(((totalCurrentValue - totalInvest) / totalInvest) * 100).toFixed(2)}%`,
+    })
 }
