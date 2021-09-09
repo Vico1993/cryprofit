@@ -12,7 +12,7 @@ type row = {
     diff: string
 }
 
-export const parse = async (path: string, asset?: string) => {
+export const parse = async (path: string, asset?: string, debug: boolean = false) => {
     let totalInvest = 0
     let totalCurrentValue = 0
     const rows: row[] = []
@@ -23,7 +23,7 @@ export const parse = async (path: string, asset?: string) => {
             continue
         }
 
-        const currentAssetVal = await getAssetValue(transaction.asset, transaction.currency)
+        const currentAssetVal = await getAssetValue(transaction.asset, transaction.currency, debug)
 
         if (!currentAssetVal) {
             continue

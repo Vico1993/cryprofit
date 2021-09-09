@@ -56,6 +56,6 @@ program
             console.info('')
         }
 
-        parse('./../input.json', asset)
+        parse('./../input.json', asset, debug)
     })
     .parse(process.argv)

@@ -13,12 +13,14 @@ const strintToNumber = (str: string): number => {
     return Number(str.replace(/[^0-9.-]+/g, ''))
 }
 
-// @todo: Find a better way to cach CMC price
 // Mock reponse to avoid useless call
-const cache = {
+const mock = {
     BTC: strintToNumber('59,011.65'),
     ETH: strintToNumber('4,348.04'),
 }
+
+// @todo: Find a better way to cach CMC price
+const cache = {}
 
 /**
  * Query CMC to get price
@@ -30,7 +32,12 @@ const cache = {
 export const getAssetValue = async (
     symbol: string,
     currency: string = CURRENCY,
+    debug: boolean = false,
 ): Promise<number | null> => {
+    if (debug) {
+        return mock[symbol]
+    }
+
     if (typeof cache[symbol] !== 'undefined') {
         return cache[symbol]
     }
