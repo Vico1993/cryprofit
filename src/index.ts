@@ -68,7 +68,7 @@ program
         console.table({
             'Total invest': totalInvest,
             'Total current Value': parseFloat(totalCurrentValue.toFixed(2)),
-            'Diff ( in CAD )': `$${((totalCurrentValue - totalInvest) / totalInvest).toFixed(5)}`,
+            'Diff ( in CAD )': `$${(totalCurrentValue - totalInvest).toFixed(2)}`,
             'Diff ( in % )': `${(((totalCurrentValue - totalInvest) / totalInvest) * 100).toFixed(
                 2,
             )}%`,

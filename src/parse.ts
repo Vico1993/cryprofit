@@ -31,8 +31,6 @@ export const parse = async (
 
         const currentPrice = transaction.quantity * currentAssetVal
 
-        console.log(currentAssetVal, currentPrice, transaction.quantity)
-
         totalInvest += transaction.bought_for
         totalCurrentValue += currentPrice
 
