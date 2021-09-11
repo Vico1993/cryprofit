@@ -40,6 +40,15 @@ export type cmcAPIResponse = {
 }
 
 /**
+ * Option to configure api client
+ */
+export type CoinMarketCapOptions = {
+    apiKey: string
+    currency?: string
+    debug?: boolean
+}
+
+/**
  * Parsing input format
  */
 export type input = {

@@ -1,4 +1,4 @@
-import { getAssetValue } from './service'
+import { initCoinMarketCap } from './service'
 import { input, quote, totalQuote } from './types'
 
 /**
@@ -23,7 +23,9 @@ export const parse = async (
         if (asset && asset != transaction.asset) {
             continue
         }
-        const currentAssetVal = await getAssetValue(transaction.asset, transaction.currency, debug)
+        const currentAssetVal = await initCoinMarketCap({
+            debug: debug,
+        }).getAssetValue(transaction.asset)
 
         if (!currentAssetVal) {
             continue
