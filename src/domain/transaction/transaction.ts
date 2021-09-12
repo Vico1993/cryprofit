@@ -7,7 +7,7 @@ export class transaction implements transactionEntity {
     public quantity: number
     public assetPrice: number
 
-    constructor(date: string, asset: string, quantity: number, price: number, assetPrice: number) {
+    constructor({ date, asset, quantity, price, assetPrice }: transactionEntity) {
         this.date = new Date(date).toLocaleDateString('en-ca')
         this.price = price
         this.asset = asset

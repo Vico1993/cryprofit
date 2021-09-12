@@ -20,13 +20,13 @@ export class transactionModel {
         const data = require(path) as input[]
 
         return data.map((input) => {
-            return new transaction(
-                input.time,
-                input.asset,
-                input.quantity,
-                input.bought_for,
-                input.asset_value,
-            )
+            return new transaction({
+                date: input.time,
+                asset: input.asset,
+                quantity: input.quantity,
+                price: input.bought_for,
+                assetPrice: input.asset_value,
+            })
         })
     }
 
