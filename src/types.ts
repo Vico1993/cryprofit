@@ -59,26 +59,3 @@ export type input = {
     bought_for: number
     currency: string
 }
-
-/**
- *
- */
-export type quote = {
-    time: string
-    asset: string
-    quantity: number
-    boughtAt: number
-    currentPrice: number
-    boughtFor: number
-    currentValue: number
-    diff: string
-}
-
-/**
- *
- */
-export type totalQuote = {
-    totalInvest: number
-    totalCurrentValue: number
-    quotes: quote[]
-}

@@ -82,8 +82,6 @@ export class CoinMarketCap {
 
         if (typeof this.assetMemory[asset] === 'undefined') {
             try {
-                console.log(asset)
-
                 const response = (await this.client.getQuotes({
                     symbol: asset,
                     convert: this.currency,

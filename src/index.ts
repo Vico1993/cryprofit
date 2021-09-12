@@ -5,8 +5,8 @@ import * as path from 'path'
 import { Command } from 'commander'
 import clear from 'clear'
 import figlet from 'figlet'
-import { parse } from './parse'
-import { input } from './types'
+import { transactionModel } from './domain/transaction/transactionModel'
+import { initCoinMarketCap } from './service'
 
 const program = new Command()
 
@@ -57,21 +57,18 @@ program
             console.info('')
         }
 
-        const data = require('./../input.json') as input[]
+        const model = new transactionModel(
+            initCoinMarketCap({
+                debug: debug,
+            }),
+        )
 
-        const { quotes, totalInvest, totalCurrentValue } = await parse(data, asset, debug)
+        const transactions = model.builder('./../../../input.json')
+        const transactionsOutput = await model.toOutput(transactions)
 
         // Overview
-        console.table(quotes)
+        console.table(transactionsOutput)
 
-        // Result
-        console.table({
-            'Total invest': totalInvest,
-            'Total current Value': parseFloat(totalCurrentValue.toFixed(2)),
-            'Diff ( in CAD )': `$${(totalCurrentValue - totalInvest).toFixed(2)}`,
-            'Diff ( in % )': `${(((totalCurrentValue - totalInvest) / totalInvest) * 100).toFixed(
-                2,
-            )}%`,
-        })
+        console.table(model.calculateAnalytics(transactionsOutput))
     })
     .parse(process.argv)
