@@ -1,5 +1,5 @@
-import faker, { fake } from 'faker'
-import { transaction, transactionEntity } from '../../src/domain'
+import faker from 'faker'
+import { transaction } from '../../src/domain'
 
 /**
  * Build a fake transaction with faker.

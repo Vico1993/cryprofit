@@ -1,3 +1,6 @@
+// For now because input type is JSON
+/* eslint-disable @typescript-eslint/no-var-requires */
+
 import { CoinMarketCap } from '../../service/coinmarketcap'
 import { analyticsOutput, transactionEntity, transactionOutput } from '../types'
 import { input } from '../../types'
@@ -38,7 +41,7 @@ export class transactionModel {
      */
     public toOutput = async (transactions: transactionEntity[]): Promise<transactionOutput[]> => {
         // return transactions.map((transaction) => {})
-        let output: transactionOutput[] = []
+        const output: transactionOutput[] = []
 
         for (const transaction of transactions) {
             const assetValue = await this.coinmarketcapClient.getAssetValue(transaction.asset)

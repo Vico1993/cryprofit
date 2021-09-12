@@ -14,14 +14,14 @@ export class CoinMarketCap {
      *
      * @type {Boolean}
      */
-    private debug: boolean = false
+    private debug = false
 
     /**
      * Devise to get data too
      *
      * @type {string}
      */
-    private currency: string = 'CAD'
+    private currency = 'CAD'
 
     /**
      * Small cache system to not query CoinMarketCap everytime for the same asset

@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
 import chalk from 'chalk'
-import * as path from 'path'
 import { Command } from 'commander'
 import clear from 'clear'
 import figlet from 'figlet'
@@ -22,7 +21,7 @@ program
     .option('-a --asset <code>', 'Can choose a crypto, ex: BTC')
     .option('-d --debug', 'List all trade with a Lost or profit')
     // .option('-p --path', 'File path for the CSV')
-    .action(async (opts, comand) => {
+    .action(async (opts) => {
         let asset = null
         let debug = false
 
