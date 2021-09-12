@@ -19,11 +19,19 @@ describe('transactionModel@toOutput', () => {
         getAssetValueMock.mockResolvedValue(100)
 
         const transaction = transactionFactory({
+            quantity: 1,
             price: 50,
         })
 
-        const ouput = await model.toOutput([transaction])
+        const output = await model.toOutput([transaction])
 
-        expect(ouput).toHaveLength(1)
+        expect(output).toHaveLength(1)
+        expect(output.shift()).toMatchObject({
+            ...output.shift(),
+            quantity: 1,
+            price: 50,
+            assetCurrentPrice: 100,
+            diff: '100.00 %',
+        })
     })
 })
