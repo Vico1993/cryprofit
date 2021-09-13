@@ -4,7 +4,7 @@ import chalk from 'chalk'
 import { Command } from 'commander'
 import clear from 'clear'
 import figlet from 'figlet'
-import { transactionModel } from './domain/transaction/transactionModel'
+import { transactionModel } from './domain'
 import { initCoinMarketCap } from './service'
 
 const program = new Command()

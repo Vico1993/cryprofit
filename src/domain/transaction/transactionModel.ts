@@ -40,7 +40,6 @@ export class transactionModel {
      * @returns {transactionOutput[]}
      */
     public toOutput = async (transactions: transactionEntity[]): Promise<transactionOutput[]> => {
-        // return transactions.map((transaction) => {})
         const output: transactionOutput[] = []
 
         for (const transaction of transactions) {

@@ -1,4 +1,4 @@
-import { transactionModel } from '../../src/domain'
+import { transactionModel, transactionOutput } from '../../src/domain'
 import { transactionFactory } from './../factory'
 import { initCoinMarketCap } from './../../src/service'
 
@@ -32,6 +32,113 @@ describe('transactionModel@toOutput', () => {
             price: 50,
             assetCurrentPrice: 100,
             diff: '100.00 %',
+        })
+    })
+})
+
+describe('transactionModel@calculateAnalytics', () => {
+    const transactions: transactionOutput[] = [
+        {
+            ...transactionFactory({
+                quantity: 1,
+                price: 50,
+            }),
+            currentPrice: 100,
+            assetCurrentPrice: 100,
+            diff: '100.00 %',
+        },
+        {
+            ...transactionFactory({
+                quantity: 1,
+                price: 50,
+            }),
+            currentPrice: 25,
+            assetCurrentPrice: 25,
+            diff: '-50.00 %',
+        },
+        {
+            ...transactionFactory({
+                quantity: 0.45,
+                price: 100,
+            }),
+            currentPrice: 131.4,
+            assetCurrentPrice: 292,
+            diff: '31.40 %',
+        },
+    ]
+
+    it('Test accurate total', () => {
+        const result = model.calculateAnalytics(transactions)
+
+        expect(result).toStrictEqual({
+            currentPrice: 256.4,
+            totalInvest: 200,
+            diff: '28.20 %',
+        })
+    })
+
+    it('Test with a lot of negative value', () => {
+        transactions.push(
+            {
+                ...transactionFactory({
+                    quantity: 1,
+                    price: 100,
+                }),
+                currentPrice: 24,
+                assetCurrentPrice: 24,
+                diff: '-76 %',
+            },
+            {
+                ...transactionFactory({
+                    quantity: 1,
+                    price: 100,
+                }),
+                currentPrice: 8,
+                assetCurrentPrice: 8,
+                diff: '-92 %',
+            },
+        )
+
+        const result = model.calculateAnalytics(transactions)
+
+        expect(result).toStrictEqual({
+            currentPrice: 288.4,
+            totalInvest: 400,
+            diff: '-27.90 %',
+        })
+    })
+})
+
+describe('transactionModel@calculateCapitalGain', () => {
+    const cases = [
+        {
+            start: 50,
+            end: 100,
+            expected: '100.00',
+        },
+        {
+            start: 32.8,
+            end: 40,
+            expected: '21.95',
+        },
+        {
+            start: 21.45,
+            end: 12.85,
+            expected: '-40.09',
+        },
+        {
+            start: 99.92,
+            end: 21.004,
+            expected: '-78.98',
+        },
+    ]
+
+    cases.forEach((data) => {
+        it(`Test with start: ${data.start} end: ${data.end} - expected: ${data.expected}`, () => {
+            // @ts-ignore
+            const result = model.calculateCapitalGain(data.start, data.end)
+
+            expect(data.expected).toBe(result)
         })
     })
 })
