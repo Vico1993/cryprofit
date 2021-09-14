@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { transactionModel, transactionOutput } from '../../src/domain'
 import { transactionFactory } from './../factory'
 import { initCoinMarketCap } from './../../src/service'
