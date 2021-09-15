@@ -63,6 +63,13 @@ program
             }),
         )
 
+        const filePath = __dirname + '/../' + program.opts().path
+        if (!existsSync(filePath)) {
+            console.error(`Couldn't find the file you are looking for, I'm looking at: ${filePath}`)
+
+            return
+        }
+
         const transactions = model.builder(__dirname + '/../' + program.opts().path)
         const transactionsOutput = await model.toOutput(transactions)
 
