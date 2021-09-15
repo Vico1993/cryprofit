@@ -4,6 +4,7 @@ import chalk from 'chalk'
 import { Command } from 'commander'
 import clear from 'clear'
 import figlet from 'figlet'
+import { existsSync } from 'fs'
 import { transactionModel } from './domain'
 import { initCoinMarketCap } from './service'
 
@@ -20,7 +21,7 @@ program
     )
     .option('-a --asset <code>', 'Can choose a crypto, ex: BTC')
     .option('-d --debug', 'List all trade with a Lost or profit')
-    // .option('-p --path', 'File path for the CSV')
+    .option('-p --path <path>', 'File path for the CSV based on the current location')
     .action(async (opts) => {
         let asset = null
         let debug = false
@@ -62,7 +63,7 @@ program
             }),
         )
 
-        const transactions = model.builder('./../../../input.json')
+        const transactions = model.builder(__dirname + '/../' + program.opts().path)
         const transactionsOutput = await model.toOutput(transactions)
 
         // Overview
