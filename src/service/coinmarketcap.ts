@@ -1,4 +1,5 @@
-import { default as CoinMarketCapClient } from 'coinmarketcap-api'
+// import { default as CoinMarketCapClient } from 'coinmarketcap-api'
+import { CoinMarketCapClient } from '../client/coinmarketcapclient'
 import { cmcAPIResponse, CoinMarketCapOptions } from '../types'
 
 export class CoinMarketCap {
@@ -32,7 +33,11 @@ export class CoinMarketCap {
     private assetMemory: Record<string, number> = {}
 
     constructor(opts: CoinMarketCapOptions) {
-        this.client = new CoinMarketCapClient(opts.apiKey)
+        // this.client = new CoinMarketCapClient(opts.apiKey)
+
+        this.client = new CoinMarketCapClient({
+            apiKey: opts.apiKey,
+        })
 
         if (opts.debug) {
             this.debug = opts.debug
@@ -82,10 +87,12 @@ export class CoinMarketCap {
 
         if (typeof this.assetMemory[asset] === 'undefined') {
             try {
-                const response = (await this.client.getQuotes({
-                    symbol: asset,
-                    convert: this.currency,
-                })) as cmcAPIResponse
+                // const response = (await this.client.getQuotes({
+                //     symbol: asset,
+                //     convert: this.currency,
+                // })) as cmcAPIResponse
+
+                const response = await this.client.getAssetValue(asset, this.currency)
 
                 this.assetMemory[asset] = response.data[asset].quote[this.currency].price
             } catch (error) {
