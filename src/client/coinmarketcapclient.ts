@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { cmcAPIResponse } from '../types'
 
-type Options = {
+type clientOptions = {
     apiKey: string
 }
 
@@ -16,7 +16,7 @@ export class CoinMarketCapClient {
      */
     private baseURL = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency'
 
-    constructor(opts: Options) {
+    constructor(opts: clientOptions) {
         this.key = opts.apiKey
     }
 
@@ -24,6 +24,7 @@ export class CoinMarketCapClient {
      * Return asset value
      *
      * @param {string} asset
+     * @param {string} currency
      * @returns {Promise<cmcAPIResponse>}
      */
     public getAssetValue = async (asset: string, currency: string): Promise<cmcAPIResponse> => {
