@@ -78,7 +78,7 @@ program
 
         const { details, ...analitycs } = model.calculateAnalytics(transactionsOutput)
 
-        console.log('DETAILS')
+        console.log(' -- DETAILS -- ')
         console.table(details)
 
         console.table(analitycs)
