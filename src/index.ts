@@ -7,6 +7,9 @@ import figlet from 'figlet'
 import { existsSync } from 'fs'
 import { transactionModel } from './domain'
 import { initCoinMarketCap } from './service'
+import { loadCSV } from './domain/parser'
+import { resolve } from 'path'
+import { CryptoDotCom } from './domain/parser/cryptoDotCom/cryptoCom'
 
 const program = new Command()
 
@@ -21,6 +24,7 @@ program
     )
     .option('-a --asset <code>', 'Can choose a crypto, ex: BTC')
     .option('-d --debug', 'List all trade with a Lost or profit')
+    .option('-c --crypto', 'Work on the feature for CRYPTO.com')
     .option('-p --path <path>', 'File path for the CSV based on the current location')
     .action(async (opts) => {
         let asset = null
@@ -57,20 +61,31 @@ program
             console.info('')
         }
 
+        // Default behavior
         const model = new transactionModel(
             initCoinMarketCap({
                 debug: debug,
             }),
         )
 
-        const filePath = __dirname + '/../' + program.opts().path
-        if (!existsSync(filePath)) {
-            console.error(`Couldn't find the file you are looking for, I'm looking at: ${filePath}`)
+        let transactions
+        if (program.opts().crypto) {
+            const crypto = new CryptoDotCom()
 
-            return
+            transactions = crypto.buildTransaction(await loadCSV(resolve('./reports/crypto.csv')))
+        } else {
+            const filePath = __dirname + '/../' + program.opts().path
+            if (!existsSync(filePath)) {
+                console.error(
+                    `Couldn't find the file you are looking for, I'm looking at: ${filePath}`,
+                )
+
+                return
+            }
+
+            transactions = model.builder(__dirname + '/../' + program.opts().path)
         }
 
-        const transactions = model.builder(__dirname + '/../' + program.opts().path)
         const transactionsOutput = await model.toOutput(transactions)
 
         // Overview

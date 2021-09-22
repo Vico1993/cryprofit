@@ -10,3 +10,4 @@ Small script to help keep track of my portfolio and some crypto purchase I made
     -   Could integrate EARN with Blokfi and Celsius
     -   Coinbase API?
 -   Make a README.md
+-   SWITCH CoinMarketCap to BINANCE API?
