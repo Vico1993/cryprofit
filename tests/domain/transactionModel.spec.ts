@@ -44,6 +44,7 @@ describe('transactionModel@calculateAnalytics', () => {
                 quantity: 1,
                 price: 50,
             }),
+            asset: 'ETH',
             currentPrice: 100,
             assetCurrentPrice: 100,
             diff: '100.00 %',
@@ -53,6 +54,7 @@ describe('transactionModel@calculateAnalytics', () => {
                 quantity: 1,
                 price: 50,
             }),
+            asset: 'ETH',
             currentPrice: 25,
             assetCurrentPrice: 25,
             diff: '-50.00 %',
@@ -62,6 +64,7 @@ describe('transactionModel@calculateAnalytics', () => {
                 quantity: 0.45,
                 price: 100,
             }),
+            asset: 'ETH',
             currentPrice: 131.4,
             assetCurrentPrice: 292,
             diff: '31.40 %',
@@ -75,6 +78,13 @@ describe('transactionModel@calculateAnalytics', () => {
             currentPrice: 256.4,
             totalInvest: 200,
             diff: '28.20 %',
+            details: {
+                ETH: {
+                    currentPrice: 256.4,
+                    totalInvest: 200,
+                    diff: '28.20 %',
+                },
+            },
         })
     })
 
@@ -85,6 +95,7 @@ describe('transactionModel@calculateAnalytics', () => {
                     quantity: 1,
                     price: 100,
                 }),
+                asset: 'BTC',
                 currentPrice: 24,
                 assetCurrentPrice: 24,
                 diff: '-76 %',
@@ -94,6 +105,7 @@ describe('transactionModel@calculateAnalytics', () => {
                     quantity: 1,
                     price: 100,
                 }),
+                asset: 'BTC',
                 currentPrice: 8,
                 assetCurrentPrice: 8,
                 diff: '-92 %',
@@ -106,6 +118,18 @@ describe('transactionModel@calculateAnalytics', () => {
             currentPrice: 288.4,
             totalInvest: 400,
             diff: '-27.90 %',
+            details: {
+                BTC: {
+                    currentPrice: 32,
+                    totalInvest: 200,
+                    diff: '-27.90 %',
+                },
+                ETH: {
+                    currentPrice: 256.4,
+                    totalInvest: 200,
+                    diff: '28.20 %',
+                },
+            },
         })
     })
 })

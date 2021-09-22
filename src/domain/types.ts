@@ -12,8 +12,13 @@ export type transactionOutput = transactionEntity & {
     diff: string
 }
 
+export type analyticsDetailOutput = {
+    [key: string]: analyticsOutput
+}
+
 export type analyticsOutput = {
     totalInvest: number
     currentPrice: number
     diff: string
+    details?: analyticsDetailOutput
 }

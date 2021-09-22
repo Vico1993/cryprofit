@@ -2,7 +2,12 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 
 import { CoinMarketCap } from '../../service/coinmarketcap'
-import { analyticsOutput, transactionEntity, transactionOutput } from '../types'
+import {
+    analyticsOutput,
+    transactionEntity,
+    transactionOutput,
+    analyticsDetailOutput,
+} from '../types'
 import { input } from '../../types'
 import { transaction } from './transaction'
 
@@ -72,16 +77,36 @@ export class transactionModel {
     public calculateAnalytics = (transactions: transactionOutput[]): analyticsOutput => {
         let totalInvest = 0
         let currentPrice = 0
+        const details: analyticsDetailOutput = {}
 
         for (const transaction of transactions) {
             totalInvest += transaction.price
             currentPrice += transaction.currentPrice
+
+            if (details[transaction.asset]) {
+                details[transaction.asset] = {
+                    totalInvest: (details[transaction.asset].totalInvest += transaction.price),
+                    currentPrice: (details[transaction.asset].currentPrice +=
+                        transaction.currentPrice),
+                    diff: `${this.calculateCapitalGain(totalInvest, currentPrice)} %`,
+                }
+            } else {
+                details[transaction.asset] = {
+                    totalInvest: transaction.price,
+                    currentPrice: transaction.currentPrice,
+                    diff: `${this.calculateCapitalGain(
+                        transaction.price,
+                        transaction.currentPrice,
+                    )} %`,
+                }
+            }
         }
 
         return {
             currentPrice,
             totalInvest,
             diff: `${this.calculateCapitalGain(totalInvest, currentPrice)} %`,
+            details: details,
         }
     }
 

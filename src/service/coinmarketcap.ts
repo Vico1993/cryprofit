@@ -1,6 +1,6 @@
 // import { default as CoinMarketCapClient } from 'coinmarketcap-api'
 import { CoinMarketCapClient } from '../client/coinmarketcapclient'
-import { cmcAPIResponse, CoinMarketCapOptions } from '../types'
+import { CoinMarketCapOptions } from '../types'
 
 export class CoinMarketCap {
     /**

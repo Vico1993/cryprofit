@@ -76,6 +76,11 @@ program
         // Overview
         console.table(transactionsOutput)
 
-        console.table(model.calculateAnalytics(transactionsOutput))
+        const { details, ...analitycs } = model.calculateAnalytics(transactionsOutput)
+
+        console.log('DETAILS')
+        console.table(details)
+
+        console.table(analitycs)
     })
     .parse(process.argv)
