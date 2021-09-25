@@ -30,6 +30,13 @@ export type CryptoDotComInput = {
     'Transaction Kind': CryptoDotComTransacKind
 }
 
+export type Earn = {
+    [key: string]: {
+        quantity: number
+        value?: number
+    }
+}
+
 export interface basicParserInterface {
     /**
      * Build a list of transaction based on Parser input

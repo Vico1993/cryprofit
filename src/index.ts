@@ -62,17 +62,24 @@ program
         }
 
         // Default behavior
-        const model = new transactionModel(
-            initCoinMarketCap({
-                debug: debug,
-            }),
-        )
+        const coinMarketCapClient = initCoinMarketCap({
+            debug: debug,
+        })
+        const model = new transactionModel(coinMarketCapClient)
 
+        let earn
         let transactions
         if (program.opts().crypto) {
             const crypto = new CryptoDotCom()
 
             transactions = crypto.buildTransaction(await loadCSV(resolve('./reports/crypto.csv')))
+            earn = crypto.getEarn()
+
+            for (const asset in earn) {
+                earn[asset].value = (
+                    earn[asset].quantity * (await coinMarketCapClient.getAssetValue(asset))
+                ).toFixed(2)
+            }
         } else {
             const filePath = __dirname + '/../' + program.opts().path
             if (!existsSync(filePath)) {
@@ -93,9 +100,12 @@ program
 
         const { details, ...analitycs } = model.calculateAnalytics(transactionsOutput)
 
+        console.table(analitycs)
+
         console.log(' -- DETAILS -- ')
         console.table(details)
 
-        console.table(analitycs)
+        console.log(' -- EARN -- ')
+        console.table(earn)
     })
     .parse(process.argv)
