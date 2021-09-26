@@ -3,15 +3,13 @@
   "version": "1.0.0",
   "description": "Find your profit",
   "main": "build/index.js",
+  "bin": "build/index.js",
   "files": [
     "build"
   ],
-  "bin": {
-    "cryprofit": "./build/index.js"
-  },
   "scripts": {
     "start": "node .",
-    "build": "tsc -p tsconfig.json",
+    "build": "tsc",
     "lint": "eslint . --ext .ts",
     "test": "jest",
     "prettier-format": "prettier --config .prettierrc 'src/**/*.ts' --write",
